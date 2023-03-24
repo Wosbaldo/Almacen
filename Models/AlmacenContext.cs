@@ -6,16 +6,11 @@ namespace Almacen.Models;
 
 public partial class AlmacenContext : DbContext
 {
+    internal object producto;
+
     public AlmacenContext()
     {
-       // Producto producto = new Producto();
-       // producto.Id = 01;
-       // producto.Nombre = "Manzana";
-       // producto.Descripción = "Frutas frescas";
-       //producto.Stokck = 50;
-
-        //db.Productos.Add(producto);
-        //db.SaveChanges();
+       
     }
 
     public AlmacenContext(DbContextOptions<AlmacenContext> options)
