@@ -12,54 +12,92 @@ namespace Almacen.DAO
         public void AgregarProducto(Producto Parametroproducto)
         {
 
-            {
-
-                using (AlmacenContext db =
+            using (AlmacenContext db =
                     new AlmacenContext())
-                {
-                    Producto producto = new Producto();
-                    producto.Nombre = Parametroproducto.Nombre;
-                    producto.Descripción = Parametroproducto.Descripción;
-                    producto.Precio = Parametroproducto.Precio;
-                    producto.Stokck = Parametroproducto.Stokck;
-                    db.Add(producto);
-                    db.SaveChanges();
-                }
-
+            {
+                Producto producto = new Producto();
+                producto.Nombre = Parametroproducto.Nombre;
+                producto.Descripción = Parametroproducto.Descripción;
+                producto.Precio = Parametroproducto.Precio;
+                producto.Stokck = Parametroproducto.Stokck;
+                db.Add(producto);
+                db.SaveChanges();
             }
 
-             Producto ProductoIndividual(int id)
+        }
+
+        public Producto ProductoIndividual(int id)
+        {
+            using (AlmacenContext bd = new AlmacenContext())
             {
-                using (AlmacenContext bd = new AlmacenContext())
-                {
 
-                    var buscar = bd.Productos.FirstOrDefault(x => x.Id == id);
+                var buscar = bd.Productos.FirstOrDefault(x => x.Id == id);
 
-                    return buscar;
-                }
+                return buscar;
             }
-             void ActualizarProducto(Producto ParamentroProducto)
+        }
+        public void ActualizarProducto(Producto Parametroproducto, int Lector)
+        {
+            using (AlmacenContext db =
+                new AlmacenContext())
             {
-                using (AlmacenContext db =
-                    new AlmacenContext())
-                {
 
-                    var buscar = ProductoIndividual(ParamentroProducto.Id);
-                    if (buscar == null)
+                var buscar = ProductoIndividual(Parametroproducto.Id);
+                if (buscar == null)
+                {
+                    Console.WriteLine("El id no existe");
+                }
+                else
+                {
+                    if (Lector == 1)
                     {
-                        Console.WriteLine("El id no existe");
+                        buscar.Nombre = Parametroproducto.Nombre;
                     }
                     else
                     {
-                        buscar.Precio = ParamentroProducto.Precio;
-                        db.Update(buscar);
-                        db.SaveChanges();
-
+                       
+                        buscar.Precio = Parametroproducto.Precio;
                     }
 
+                    
+                    db.Update(buscar);
+                    db.SaveChanges();
+
                 }
+
             }
         }
-    }
+        public string EliminarProducto(int id)
+        {
+            using (AlmacenContext db =
+                    new AlmacenContext())
+            {
+                var buscar = ProductoIndividual(id);
+                if (buscar == null)
+                {
+                    return "El Producto no existe";
+                }
+                else
+                {
+                    db.Productos.Remove(buscar);
+                    db.SaveChanges();
+                    return "El Productose elimino";
+                }
 
-}
+            }
+        }
+
+        public List<Producto> ListarProducto()
+        {
+            using (AlmacenContext db =
+                   new AlmacenContext())
+            {
+                return db.Productos.ToList();
+            }
+
+        }
+       
+
+
+    }
+} 

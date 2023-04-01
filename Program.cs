@@ -2,78 +2,108 @@
 using Almacen.DAO;
 using Almacen.Models;
 
-CrudProducto crudProducto = new CrudProducto();
-Producto Producto = new Producto();
-
-
-Console.WriteLine("Menu");
-Console.WriteLine("Pulse 1 para realizar insertar Producto");
-Console.WriteLine("Pulse 2 para realizar una actualizacion de Producto");
-var Menu = Convert.ToInt32(Console.ReadLine());
-
-
-switch (Menu)
+internal class Program
 {
+    private static void Main(string[] args)
+    {
+        CrudProducto crudProducto = new CrudProducto();
+        Producto Producto = new Producto();
 
-    case 1:
-        int bucle = 1;
-        while (bucle == 1)
+
+        bool Continuar = true;
+        while (Continuar)
         {
-            Console.WriteLine("Ingresa el nombre del Producto");
-            Producto.Nombre = Console.ReadLine();
-            Console.WriteLine("Ingresa La descripción");
-            Producto.Descripción = Console.ReadLine();
-            Console.WriteLine("Ingresa su Precio");
-            Producto.Precio = Convert.ToInt32(Console.ReadLine());
-            CrudProducto.AgregarProducto(Producto);
-            Console.WriteLine("El Nombre del producto  se ingreso correctamente");
-            Console.WriteLine("Pulsa 1 para continuar insertando Productos");
-            Console.WriteLine("Pulsa 0 para salir");
-            bucle = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Menu");
+            Console.WriteLine("Pulse 1 para realizar insertar Producto");
+            Console.WriteLine("Pulse 2 para realizar una actualizacion de Producto");
+            Console.WriteLine("Pulse 3 para realizar unaEliminacion de Producto");
+            Console.WriteLine("Pulse 4 para realizar una Listado de Producto");
+
+            var Menu = Convert.ToInt32(Console.ReadLine());
+
+            switch (Menu)
+            {
+
+                case 1:
+                    int bucle = 1;
+                    while (bucle == 1)
+                    {
+
+                    }
+                    break;
+                case 2:
+                    Console.WriteLine("Actualizar datos");
+                    Console.WriteLine("Ingresa el ID del producto a actualizar");
+                    var ProductoIndividualU = crudProducto.ProductoIndividual(Convert.ToInt32(Console.ReadLine()));
+                    if (ProductoIndividualU == null)
+                    {
+                        Console.WriteLine("ElProducto no existe");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Nombre {ProductoIndividualU.Nombre} , Precio {ProductoIndividualU.Precio}");
+
+
+                        Console.WriteLine("Para actulizar nombre coloca el # 1");
+
+                        Console.WriteLine("Para actulizar el precio coloca el # 2");
+
+                        var Lector = Convert.ToInt32(Console.ReadLine());
+                        if (Lector == 1)
+                        {
+                            Console.WriteLine("Ingrese el nombre");
+                            ProductoIndividualU.Nombre = Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ingrese el precio");
+                            ProductoIndividualU.Descripción = Console.ReadLine();
+                        }
+                        crudProducto.ActualizarProducto(ProductoIndividualU, Lector);
+                        Console.WriteLine("Actualizacion correcta");
+                    }
+                    break;
+                case 3:
+                    Console.WriteLine("Ingresa el ID delproducto a eliminar");
+                    var ProductoIndividualD = crudProducto.ProductoIndividual(Convert.ToInt32(Console.ReadLine()));
+                    if (ProductoIndividualD == null)
+                    {
+                        Console.WriteLine("Este producto no existe");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Eliminar producto");
+                        Console.WriteLine($"Nombre {ProductoIndividualD.Nombre} , Precio {ProductoIndividualD.Precio}");
+                        Console.WriteLine("El producto encontrado es el correcto?");
+                        var Lector = Convert.ToInt32(Console.ReadLine());
+                        if (Lector == 1)
+                        {
+                            var Id = Convert.ToInt32(ProductoIndividualD.Id);
+                            Console.WriteLine(crudProducto.EliminarProducto(Id));
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inicia nuevamente");
+                        }
+
+                    }
+                    break;
+                case 4:
+                    Console.WriteLine("Lista de Producto");
+                    var ListarProducto = crudProducto.ListarProducto();
+                    foreach (var iteracionProducto in ListarProducto)
+                    {
+                        Console.WriteLine($"{iteracionProducto.Id} , {iteracionProducto.Nombre} , {iteracionProducto.Precio}");
+                    }
+                    break;
+            }
+            Console.WriteLine("Desea continuar ?");
+            var cont = Console.ReadLine();
+            if (cont.Equals("N"))
+            {
+                Continuar = false;
+            }
         }
-        break;
-    case 2:
-        Console.WriteLine("Actualizar datos");
-        break;
+
+    }
 }
-//Usuario.Id = 3;
-
-
-
-//CrudUsuarios.AgregarUsuario(Usuario);
-//CrudUsuarios.ActualizarUsuario(Usuario);
-
-
-
-
-//OrmEntityFrameworkContext db = new OrmEntityFrameworkContext();
-
-//var buscar = db.Usuarios.FirstOrDefault(x => x.Id == 1);
-
-//db.Usuarios.Remove(buscar);
-//db.SaveChanges();
-#region Actualizar
-//buscar.Nombre = "Efrain";
-//buscar.Apellido = "Villacorta";
-
-//db.Usuarios.Update(buscar);
-//db.SaveChanges();
-#endregion
-//Console.WriteLine(buscar);
-#region Listar
-//var ListUsuarios = db.Usuarios.ToList();
-
-//        foreach (var usu in ListUsuarios) {
-//            Console.WriteLine(usu.Nombre);
-//        }
-
-#endregion
-#region Insertar
-//Usuario usuario = new Usuario();
-//usuario.Nombre = "Mario";
-//usuario.Apellido = "Alas";
-//usuario.Edad = 18;
-
-//db.Usuarios.Add(usuario);
-//db.SaveChanges();
-#endregion
